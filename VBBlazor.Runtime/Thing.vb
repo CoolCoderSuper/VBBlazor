@@ -1,5 +1,5 @@
 ﻿Imports Microsoft.AspNetCore.Components
-Imports VBBlazor.Core.Controls
+Imports VBBlazor.Runtime.Controls
 
 Public Class Thing
     Inherits Control
@@ -13,7 +13,7 @@ Public Class Thing
     Public Property ChildContent As RenderFragment
 
     Public Overrides Function GetContent() As XElement
-        Return <div xmlns:local="VBBlazor.Core.Controls">
+        Return <div xmlns:local="VBBlazor.Runtime.Controls">
                    <local:Label Text="@Name"/>
                    <br/>
                    <local:Label ChildContent="@ChildContent"/>

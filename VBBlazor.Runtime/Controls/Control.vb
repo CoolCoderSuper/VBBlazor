@@ -4,9 +4,11 @@ Imports Microsoft.AspNetCore.Components.Rendering
 Namespace Controls
     Public Class Control
         Inherits ComponentBase
-        Public Property DataContext As Object
+        Implements IRenderable
+        
+        Public Property DataContext As Object Implements IRenderable.DataContext
 
-        Public Overridable Function GetContent() As XElement
+        Public Overridable Function GetContent() As XElement Implements IRenderable.GetContent
             Return <div/>
         End Function
 

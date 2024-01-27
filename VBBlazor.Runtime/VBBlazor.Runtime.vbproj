@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <RootNamespace>VBBlazor.Core</RootNamespace>
+        <RootNamespace>VBBlazor.Runtime</RootNamespace>
         <TargetFramework>net7.0</TargetFramework>
     </PropertyGroup>
 

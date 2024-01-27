@@ -3,7 +3,7 @@ Imports System.Reflection
 Imports Microsoft.AspNetCore.Components
 Imports Microsoft.AspNetCore.Components.CompilerServices
 Imports Microsoft.AspNetCore.Components.Rendering
-Imports VBBlazor.Core.Controls
+Imports VBBlazor.Runtime.Controls
 'TODO: Improve type resolution
 'TODO: Routing
 'TODO: Cascading parameters
@@ -12,10 +12,10 @@ Imports VBBlazor.Core.Controls
 'TODO: @bind:event, @bind:after, @bind:format, @bind
 'TODO: Templating
 Public Class XmlRenderer
-    Private ReadOnly _page As Control
+    Private ReadOnly _page As IRenderable
     Private ReadOnly _receiver As Object
 
-    Public Sub New(page As Control, receiver As Object)
+    Public Sub New(page As IRenderable, receiver As Object)
         _page = page
         _receiver = receiver
     End Sub

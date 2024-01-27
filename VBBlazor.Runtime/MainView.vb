@@ -1,7 +1,7 @@
 ﻿Imports Microsoft.AspNetCore.Components
 Imports Microsoft.AspNetCore.Components.Forms
 Imports Microsoft.JSInterop
-Imports VBBlazor.Core.Controls
+Imports VBBlazor.Runtime.Controls
 
 Public Class MainView
     Inherits Control
@@ -21,7 +21,7 @@ Public Class MainView
 
     Public Overrides Function GetContent() As XElement
         Dim names = {"Joe", "Bob", "Mary"}
-        Return <div class="hello" xmlns:web="Microsoft.AspNetCore.Components.Web" xmlns:forms="Microsoft.AspNetCore.Components.Forms" xmlns:local="VBBlazor.Shared" xmlns:vblocal="VBBlazor.Core">
+        Return <div class="hello" xmlns:web="Microsoft.AspNetCore.Components.Web" xmlns:forms="Microsoft.AspNetCore.Components.Forms" xmlns:local="VBBlazor.Shared" xmlns:vblocal="VBBlazor.Runtime">
                    <web:PageTitle>Index from VB</web:PageTitle>
                    <web:HeadContent>
                        <meta name="description" content="@Description"/>
