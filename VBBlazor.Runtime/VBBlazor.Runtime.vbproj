@@ -2,11 +2,11 @@
 
     <PropertyGroup>
         <RootNamespace>VBBlazor.Runtime</RootNamespace>
-        <TargetFramework>net7.0</TargetFramework>
+        <TargetFramework>net8.0</TargetFramework>
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="7.0.10" />
+      <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="8.0.1" />
     </ItemGroup>
 
 </Project>
