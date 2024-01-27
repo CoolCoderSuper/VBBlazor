@@ -7,6 +7,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VBBlazor", "VBBlazor\VBBlaz
 EndProject
 Project("{778DAE3C-4631-46EA-AA77-85C1314464D9}") = "VBBlazor.Core", "VBBlazor.Core\VBBlazor.Core.vbproj", "{E9C4A431-80EB-43B6-BB09-EC570D5B3674}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{97B687CB-CFB9-4E48-BE1E-E082267D5781}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
