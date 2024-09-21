@@ -41,10 +41,18 @@ Public Class MainView
                        <%= From name In names
                            Select <li><%= name %></li> %>
                    </ul>
-                   <local:Thing Name="@Title">
+                   <local:ChildContentTest Name="@Title">
                        <b>Thing child</b>
-                       <local:Thing Name="Thing that is child of thing"/>
-                   </local:Thing>
+                       <local:ChildContentTest Name="Thing that is child of thing"/>
+                   </local:ChildContentTest>
+                   <local:MultiContentTest>
+                       <Header>
+                           <b>Header</b>
+                       </Header>
+                       <Footer>
+                           <b>Footer</b>
+                       </Footer>
+                   </local:MultiContentTest>
                    <local:Counter/>
                </div>
     End Function

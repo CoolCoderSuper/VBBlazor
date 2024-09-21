@@ -1,7 +1,7 @@
 ﻿Imports Microsoft.AspNetCore.Components
 Imports VBBlazor.Runtime.Controls
 
-Public Class Thing
+Public Class ChildContentTest
     Inherits Control
     Public Sub New()
         DataContext = Me

@@ -1,5 +1,6 @@
 ﻿Imports System.Linq.Expressions
 Imports System.Reflection
+Imports System.Xml
 Imports Microsoft.AspNetCore.Components
 Imports Microsoft.AspNetCore.Components.CompilerServices
 Imports Microsoft.AspNetCore.Components.Rendering
@@ -27,10 +28,11 @@ Public Class XmlRenderer
     Private Function Render(element As XElement) As RenderFragment
         Return Sub(builder)
                    Dim index As Integer = 0
+                   Dim componentType As Type
                    If element.Name.NamespaceName = "" Then
                        builder.OpenElement(index, element.Name.ToString())
                    Else
-                       Dim componentType As Type = GetTypeByName($"{element.Name.NamespaceName}.{element.Name.LocalName}")
+                       componentType = GetTypeByName($"{element.Name.NamespaceName}.{element.Name.LocalName}")
                        If componentType.ContainsGenericParameters Then
                            Dim types As New List(Of Type)
                            For Each typeParam As Type In componentType.GetGenericArguments()
@@ -91,22 +93,30 @@ Public Class XmlRenderer
                        End If
                    End If
                    If Not element.IsEmpty Then
-                       index += 1
-                       If element.Name.NamespaceName = "" Then
-                           builder.AddContent(index, If(element.Elements().Any(), "", element.Value))
-                           For Each el As XElement In element.Elements()
+                       If componentType Is Nothing Then
+                           For Each el As XNode In element.Nodes()
                                index += 1
-                               builder.AddContent(index, Render(el))
+                               If el.NodeType = XmlNodeType.Text Then
+                                   builder.AddContent(index, el.ToString())
+                               Else
+                                   builder.AddContent(index, Render(el))
+                               End If
                            Next
                        Else
-                           builder.AddAttribute(index, "ChildContent", CType(Sub(b As RenderTreeBuilder)
-                                                                                 Dim index2 As Integer = 0
-                                                                                 b.AddContent(index2, If(element.Elements().Any(), "", element.Value))
-                                                                                 For Each el As XElement In element.Elements()
-                                                                                     index2 += 1
-                                                                                     b.AddContent(index2, Render(el))
-                                                                                 Next
-                                                                             End Sub, RenderFragment))
+                           Dim props As PropertyInfo() = componentType.GetProperties()
+                           Dim elementNames As String() = element.Elements().Select(Function(x) x.Name.LocalName).ToArray()
+                           If props.Any(Function(x) elementNames.Contains(x.Name)) Then
+                               For Each el As XElement In element.Elements()
+                                   Dim prop As PropertyInfo = props.FirstOrDefault(Function(x) x.Name = el.Name.LocalName)
+                                   If prop IsNot Nothing Then
+                                       index += 1
+                                       builder.AddAttribute(index, prop.Name, GetFragment(el))
+                                   End If
+                               Next
+                           Else
+                               index += 1
+                               builder.AddAttribute(index, "ChildContent", GetFragment(element))
+                           End If
                        End If
                    End If
                    If element.Name.NamespaceName = "" Then
@@ -114,6 +124,20 @@ Public Class XmlRenderer
                    Else
                        builder.CloseComponent()
                    End If
+               End Sub
+    End Function
+
+    Private Function GetFragment(element As XElement) As RenderFragment
+        Return Sub(builder As RenderTreeBuilder)
+                   Dim index As Integer = 0
+                   For Each el As XNode In element.Nodes()
+                       index += 1
+                       If el.NodeType = XmlNodeType.Text Then
+                           builder.AddContent(index, el.ToString())
+                       Else
+                           builder.AddContent(index, Render(el))
+                       End If
+                   Next
                End Sub
     End Function
 
