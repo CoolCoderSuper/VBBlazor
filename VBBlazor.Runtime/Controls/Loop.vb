@@ -2,7 +2,7 @@
 Imports Microsoft.AspNetCore.Components.Rendering
 
 Namespace Controls
-    Public Class [Loop]
+    Public Class [Loop](Of TItem)
         Inherits Control
 
         Public Sub New()
@@ -10,10 +10,10 @@ Namespace Controls
         End Sub
 
         <Parameter>
-        Public Property Items As IEnumerable(Of Object)
+        Public Property Items As IEnumerable(Of TItem)
 
         <Parameter>
-        Public Property Template As RenderFragment(Of Object)
+        Public Property Template As RenderFragment(Of TItem)
 
         Protected Overrides Sub BuildRenderTree(builder As RenderTreeBuilder)
             Dim index As Integer = 0

@@ -18,15 +18,9 @@ Public Class TableTemplate(Of TItem)
     <Parameter>
     Public Property Items As IEnumerable(Of TItem)
 
-    Public ReadOnly Property ActualItems As IEnumerable(Of Object)
+    Public ReadOnly Property ActualRowTemplate As RenderFragment(Of TItem)
         Get
-            Return Items.Cast(Of Object)
-        End Get
-    End Property
-
-    Public ReadOnly Property ActualRowTemplate As RenderFragment(Of Object)
-        Get
-            Return Function(item As Object) 
+            Return Function(item As TItem) 
                 Return Sub(builder As RenderTreeBuilder)
                     builder.OpenElement(0, "tr")
                     builder.AddContent(1, RowTemplate(item))
@@ -44,7 +38,7 @@ Public Class TableTemplate(Of TItem)
                        </tr>
                    </thead>
                    <tbody>
-                        <local:Loop Items="@ActualItems" Template="@ActualRowTemplate"/>
+                        <local:Loop TItem="TItem" Items="@Items" Template="@ActualRowTemplate"/>
                    </tbody>
                </table>
     End Function

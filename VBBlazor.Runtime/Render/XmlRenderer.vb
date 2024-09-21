@@ -27,22 +27,32 @@ Public Class XmlRenderer
         Return Sub(builder)
                    Dim index As Integer = 0
                    Dim componentType As Type
+                   Dim processedAttributes As New HashSet(Of String)
                    If element.Name.NamespaceName = "" Then
                        builder.OpenElement(index, element.Name.ToString())
                    Else
                        componentType = GetTypeByName($"{element.Name.NamespaceName}.{element.Name.LocalName}")
                        If componentType.ContainsGenericParameters Then
+                           Dim parentType As Type = _page.GetType()
+                           Dim actualArgs As Type() = parentType.GetGenericArguments()
+                           Dim argumentNames As List(Of String) = If(parentType.IsGenericType, parentType.GetGenericTypeDefinition().GetGenericArguments().Select(Function(x) x.Name).ToList(), Nothing)
                            Dim types As New List(Of Type)
                            For Each typeParam As Type In componentType.GetGenericArguments()
                                Dim value = element.Attribute(typeParam.Name).Value
-                               Dim typeParamValue As Type = GetTypeByName(value)
+                               processedAttributes.Add(value)
+                               Dim typeParamValue As Type
+                               If parentType.IsGenericType AndAlso argumentNames.Contains(value) Then
+                                   typeParamValue = actualArgs(argumentNames.IndexOf(value))
+                               Else
+                                   typeParamValue = GetTypeByName(value)
+                               End If
                                types.Add(typeParamValue)
                            Next
                            componentType = componentType.MakeGenericType(types.ToArray())
                        End If
                        builder.OpenComponent(index, componentType)
                    End If
-                   For Each attr As XAttribute In element.Attributes().Where(Function(x) x.Name.NamespaceName = "" AndAlso x.Name <> "ref")
+                   For Each attr As XAttribute In element.Attributes().Where(Function(x) x.Name.NamespaceName = "" AndAlso x.Name <> "ref" AndAlso Not processedAttributes.Contains(x.Value))
                        index += 1
                        If attr.Value.StartsWith("@") Then
                            Dim valueName As String = attr.Value.Remove(0, 1)
@@ -96,7 +106,7 @@ Public Class XmlRenderer
                                index += 1
                                If el.NodeType = XmlNodeType.Text Then
                                    builder.AddContent(index, el.ToString())
-                               Else
+                               Elseif el.NodeType = XmlNodeType.Element Then
                                    builder.AddContent(index, Render(el))
                                End If
                            Next
@@ -132,7 +142,7 @@ Public Class XmlRenderer
                        index += 1
                        If el.NodeType = XmlNodeType.Text Then
                            builder.AddContent(index, el.ToString())
-                       Else
+                       ElseIf el.NodeType = XmlNodeType.Element Then
                            builder.AddContent(index, Render(el))
                        End If
                    Next
