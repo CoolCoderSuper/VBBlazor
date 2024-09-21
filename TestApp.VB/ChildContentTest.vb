@@ -17,7 +17,7 @@ Public Class ChildContentTest
         Return <div xmlns:local="VBBlazor.Runtime.Controls">
                    <local:Label Text="@Name"/>
                    <br/>
-                   <local:Label ChildContent="@ChildContent"/>
+                   <local:Fragment ChildContent="@ChildContent"/>
                </div>
     End Function
 End Class

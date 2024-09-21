@@ -15,11 +15,11 @@ Public Class MultiContentTest
 
     Public Overrides Function GetContent() As XElement
         Return <div xmlns:local="VBBlazor.Runtime.Controls">
-                   <local:Label ChildContent="@Header"/>
+                   <local:Fragment ChildContent="@Header"/>
                    <br/>
                    Nah bro
                    <br/>
-                   <local:Label ChildContent="@Footer"/>
+                   <local:Fragment ChildContent="@Footer"/>
                </div>
     End Function
 End Class
