@@ -3,6 +3,7 @@ Imports VBBlazor.Runtime.Controls
 
 Public Class MultiContentTest
     Inherits Control
+    
     Public Sub New()
         DataContext = Me
     End Sub

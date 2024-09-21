@@ -2,6 +2,7 @@
 
 Public Class Counter
     Inherits Control
+    
     Public Sub New()
         DataContext = Me
     End Sub

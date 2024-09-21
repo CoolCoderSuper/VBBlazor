@@ -5,10 +5,8 @@ Imports Microsoft.AspNetCore.Components
 Imports Microsoft.AspNetCore.Components.CompilerServices
 Imports Microsoft.AspNetCore.Components.Rendering
 Imports VBBlazor.Runtime.Controls
-'TODO: Improve type resolution
 'TODO: Routing
 'TODO: Cascading parameters
-'TODO: Child content
 'TODO: Prevent default
 'TODO: @bind:event, @bind:after, @bind:format, @bind
 'TODO: Templating

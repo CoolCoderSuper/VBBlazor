@@ -20,7 +20,6 @@ Public Class MainView
     Public Property Runtime As IJSRuntime
 
     Public Overrides Function GetContent() As XElement
-        Dim names = {"Joe", "Bob", "Mary"}
         Return <div class="hello" xmlns:web="Microsoft.AspNetCore.Components.Web" xmlns:forms="Microsoft.AspNetCore.Components.Forms" xmlns:local="TestApp.VB">
                    <web:PageTitle>Index from VB</web:PageTitle>
                    <web:HeadContent>
@@ -37,10 +36,6 @@ Public Class MainView
                    <forms:InputNumber TValue="System.Decimal" bind-Value="@Number"/>
                    <forms:InputDate ref="@InputDateControl" TValue="System.DateTime" bind-Value="@Time"/>
                    <h1>Bye</h1>
-                   <ul>
-                       <%= From name In names
-                           Select <li><%= name %></li> %>
-                   </ul>
                    <local:ChildContentTest Name="@Title">
                        <b>Thing child</b>
                        <local:ChildContentTest Name="Thing that is child of thing"/>
@@ -54,6 +49,7 @@ Public Class MainView
                        </Footer>
                    </local:MultiContentTest>
                    <local:Counter/>
+                   <local:NameList/>
                </div>
     End Function
 
