@@ -4,6 +4,7 @@ Imports Microsoft.AspNetCore.Components.Rendering
 Namespace Controls
     Public Class Fragment
         Inherits Control
+        
         Public Sub New()
             DataContext = Me
         End Sub
@@ -18,6 +19,7 @@ Namespace Controls
     
     Public Class Fragment(Of T)
         Inherits Control
+        
         Public Sub New()
             DataContext = Me
         End Sub

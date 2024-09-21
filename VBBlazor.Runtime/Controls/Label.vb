@@ -4,6 +4,7 @@ Imports Microsoft.AspNetCore.Components.Rendering
 Namespace Controls
     Public Class Label
         Inherits Control
+        
         Public Sub New()
             DataContext = Me
         End Sub
