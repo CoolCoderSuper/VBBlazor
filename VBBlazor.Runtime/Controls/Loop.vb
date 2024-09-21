@@ -18,7 +18,7 @@ Namespace Controls
         Protected Overrides Sub BuildRenderTree(builder As RenderTreeBuilder)
             Dim index As Integer = 0
             For Each item In Items
-                builder.AddContent(0, Template(item))
+                builder.AddContent(index, Template(item))
                 index += 1
             Next
         End Sub
