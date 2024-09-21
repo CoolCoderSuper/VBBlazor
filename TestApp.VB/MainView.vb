@@ -21,7 +21,7 @@ Public Class MainView
 
     Public Overrides Function GetContent() As XElement
         Dim names = {"Joe", "Bob", "Mary"}
-        Return <div class="hello" xmlns:web="Microsoft.AspNetCore.Components.Web" xmlns:forms="Microsoft.AspNetCore.Components.Forms" xmlns:local="VBBlazor.Shared" xmlns:vblocal="VBBlazor.Runtime">
+        Return <div class="hello" xmlns:web="Microsoft.AspNetCore.Components.Web" xmlns:forms="Microsoft.AspNetCore.Components.Forms" xmlns:local="TestApp.VB">
                    <web:PageTitle>Index from VB</web:PageTitle>
                    <web:HeadContent>
                        <meta name="description" content="@Description"/>
@@ -41,11 +41,11 @@ Public Class MainView
                        <%= From name In names
                            Select <li><%= name %></li> %>
                    </ul>
-                   <vblocal:Thing Name="@Title">
+                   <local:Thing Name="@Title">
                        <b>Thing child</b>
-                       <vblocal:Thing Name="Thing that is child of thing"/>
-                   </vblocal:Thing>
-                   <vblocal:Counter/>
+                       <local:Thing Name="Thing that is child of thing"/>
+                   </local:Thing>
+                   <local:Counter/>
                </div>
     End Function
 
