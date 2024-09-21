@@ -13,7 +13,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\VBBlazor.Runtime\VBBlazor.Runtime.vbproj" />
+      <ProjectReference Include="..\..\TestApp.VB\TestApp.VB.vbproj" />
     </ItemGroup>
 
 </Project>
