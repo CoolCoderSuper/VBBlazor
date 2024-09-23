@@ -5,8 +5,7 @@ Imports Microsoft.AspNetCore.Components
 Imports Microsoft.AspNetCore.Components.CompilerServices
 Imports Microsoft.AspNetCore.Components.Rendering
 Imports VBBlazor.Runtime.Controls
-'TODO: Routing
-'TODO: Cascading parameters
+
 Public Class XmlRenderer
     Private ReadOnly _page As IRenderable
     Private ReadOnly _receiver As Object

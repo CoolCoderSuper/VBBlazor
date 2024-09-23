@@ -20,12 +20,13 @@ Public Class MainView
         New Pet With {.PetId = 4, .Name = "Salem Saberhagen"},
         New Pet With {.PetId = 7, .Name = "K-9"}
     }
+    Public Property OtherValue As String = "Bruh"
     Public Property InputDateControl As InputDate(Of Date)
     <Inject>
     Public Property Runtime As IJSRuntime
 
     Public Overrides Function GetContent() As XElement
-        Return <div class="hello" xmlns:web="Microsoft.AspNetCore.Components.Web" xmlns:forms="Microsoft.AspNetCore.Components.Forms" xmlns:local="TestApp.VB" xmlns:vb="VBBlazor.Runtime.Controls">
+        Return <div class="hello" xmlns:components="Microsoft.AspNetCore.Components" xmlns:web="Microsoft.AspNetCore.Components.Web" xmlns:forms="Microsoft.AspNetCore.Components.Forms" xmlns:local="TestApp.VB" xmlns:vb="VBBlazor.Runtime.Controls">
                    <web:PageTitle>Index from VB</web:PageTitle>
                    <web:HeadContent>
                        <meta name="description" content="@Description"/>
@@ -54,6 +55,9 @@ Public Class MainView
                        </Footer>
                    </local:MultiContentTest>
                    <local:Counter/>
+                   <components:CascadingValue TValue="System.String" Value="@OtherValue">
+                       <local:CascadeTest/>
+                   </components:CascadingValue>
                    <local:NameList/>
                    <local:TableTemplate TItem="TestApp.VB.Pet" Items="@Pets">
                        <TableHeader>
