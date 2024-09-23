@@ -8,6 +8,7 @@ Imports VBBlazor.Runtime.Controls
 'TODO: Routing
 'TODO: Cascading parameters
 'TODO: Templating
+'TODO: Basic type conversion
 Public Class XmlRenderer
     Private ReadOnly _page As IRenderable
     Private ReadOnly _receiver As Object
@@ -18,10 +19,10 @@ Public Class XmlRenderer
     End Sub
 
     Public Function Render() As RenderFragment
-        Return Render(_page.GetContent())
+        Return Render(_page.GetContent(), Nothing)
     End Function
 
-    Private Function Render(element As XElement) As RenderFragment
+    Private Function Render(element As XElement, context As Object) As RenderFragment
         Return Sub(builder)
                    Dim index As Integer = 0
                    Dim componentType As Type
@@ -84,7 +85,7 @@ Public Class XmlRenderer
                                    builder.AddAttribute(index, actualName, New EventCallback(_receiver, Expression.Lambda(eventExpression, parameters).Compile))
                                End If
                            Else
-                               builder.AddAttribute(index, attr.Name.LocalName, GetPropertyValue(valueName))
+                               builder.AddAttribute(index, attr.Name.LocalName, GetPropertyValue(valueName, context))
                            End If
                        Else
                            builder.AddAttribute(index, attr.Name.LocalName, attr.Value)
@@ -105,7 +106,7 @@ Public Class XmlRenderer
                                If el.NodeType = XmlNodeType.Text Then
                                    builder.AddContent(index, el.ToString())
                                Elseif el.NodeType = XmlNodeType.Element Then
-                                   builder.AddContent(index, Render(el))
+                                   builder.AddContent(index, Render(el, context))
                                End If
                            Next
                        Else
@@ -117,12 +118,12 @@ Public Class XmlRenderer
                                    If prop IsNot Nothing Then
                                        index += 1
                                        If prop.PropertyType = GetType(RenderFragment) Then
-                                           builder.AddAttribute(index, prop.Name, GetFragment(el))
+                                           builder.AddAttribute(index, prop.Name, GetFragment(el, context))
                                        ElseIf prop.PropertyType.IsGenericType AndAlso prop.PropertyType.GetGenericTypeDefinition() = GetType(RenderFragment(Of )) Then
                                            Dim itemType As Type = prop.PropertyType.GetGenericArguments()(0)'TODO: Add context
                                            Dim fragmentMethod As MethodInfo = GetType(XmlRenderer).GetMethod("GetFragment", BindingFlags.NonPublic Or BindingFlags.Instance)
-                                           Dim bodyExpr = Expression.Call(Expression.Constant(Me), fragmentMethod, Expression.Constant(el))
                                            Dim contextParam = Expression.Parameter(itemType)
+                                           Dim bodyExpr = Expression.Call(Expression.Constant(Me), fragmentMethod, Expression.Constant(el), contextParam)
                                            Dim params = {contextParam}
                                            Dim lamdaMethod = GetType(Expression).GetMethods().First(Function(x) x.Name = "Lambda" AndAlso x.GetParameters().Length = 2).MakeGenericMethod(prop.PropertyType)
                                            Dim lambdaExpr = lamdaMethod.Invoke(Nothing, {bodyExpr, params})
@@ -134,7 +135,7 @@ Public Class XmlRenderer
                                Next
                            Else
                                index += 1
-                               builder.AddAttribute(index, "ChildContent", GetFragment(element))
+                               builder.AddAttribute(index, "ChildContent", GetFragment(element, context))
                            End If
                        End If
                    End If
@@ -146,7 +147,7 @@ Public Class XmlRenderer
                End Sub
     End Function
 
-    Private Function GetFragment(element As XElement) As RenderFragment
+    Private Function GetFragment(element As XElement, context As Object) As RenderFragment
         Return Sub(builder As RenderTreeBuilder)
                    Dim index As Integer = 0
                    For Each el As XNode In element.Nodes()
@@ -154,16 +155,21 @@ Public Class XmlRenderer
                        If el.NodeType = XmlNodeType.Text Then
                            builder.AddContent(index, el.ToString())
                        ElseIf el.NodeType = XmlNodeType.Element Then
-                           builder.AddContent(index, Render(el))
+                           builder.AddContent(index, Render(el, context))
                        End If
                    Next
                End Sub
     End Function
 
-    Private Function GetPropertyValue(name As String) As Object
-        Dim prop As PropertyInfo = _page.DataContext.GetType().GetProperty(name)
+    Private Function GetPropertyValue(name As String, context As Object) As Object
+        Dim useContext As Boolean = name.StartsWith("Context.")
+        If useContext Then
+            name = name.Remove(0, 8)
+        End If
+        Dim obj As Object = If(useContext, context, _page.DataContext)
+        Dim prop As PropertyInfo = obj.GetType().GetProperty(name)
         If prop IsNot Nothing Then
-            Return prop.GetValue(_page.DataContext)
+            Return prop.GetValue(obj)
         End If
         Return Nothing
     End Function
