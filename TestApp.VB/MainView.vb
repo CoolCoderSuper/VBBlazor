@@ -15,12 +15,17 @@ Public Class MainView
     Public Property Number As Decimal = 5
     Public Property Description As String = "Hello world"
     Public Property Time As Date = Date.Now
+    Public Property Pets As New List(Of Pet) From {
+        New Pet With {.PetId = 2, .Name = "Mr. Bigglesworth"},
+        New Pet With {.PetId = 4, .Name = "Salem Saberhagen"},
+        New Pet With {.PetId = 7, .Name = "K-9"}
+    }
     Public Property InputDateControl As InputDate(Of Date)
     <Inject>
     Public Property Runtime As IJSRuntime
 
     Public Overrides Function GetContent() As XElement
-        Return <div class="hello" xmlns:web="Microsoft.AspNetCore.Components.Web" xmlns:forms="Microsoft.AspNetCore.Components.Forms" xmlns:local="TestApp.VB">
+        Return <div class="hello" xmlns:web="Microsoft.AspNetCore.Components.Web" xmlns:forms="Microsoft.AspNetCore.Components.Forms" xmlns:local="TestApp.VB" xmlns:vb="VBBlazor.Runtime.Controls">
                    <web:PageTitle>Index from VB</web:PageTitle>
                    <web:HeadContent>
                        <meta name="description" content="@Description"/>
@@ -50,6 +55,16 @@ Public Class MainView
                    </local:MultiContentTest>
                    <local:Counter/>
                    <local:NameList/>
+                   <local:TableTemplate TItem="TestApp.VB.Pet" Items="@Pets">
+                       <TableHeader>
+                           <th>ID</th>
+                           <th>Name</th>
+                       </TableHeader>
+                       <RowTemplate>
+                           <td><vb:Label Text="@Context.PetId"/></td>
+                           <td><vb:Label Text="@Context.Name"/></td>
+                       </RowTemplate>
+                   </local:TableTemplate>
                </div>
     End Function
 
@@ -58,4 +73,9 @@ Public Class MainView
         Title = "Hello"
         Runtime.InvokeVoidAsync("alert", "Hello")
     End Sub
+End Class
+
+Public Class Pet
+    Public Property PetId As Integer
+    Public Property Name As String
 End Class

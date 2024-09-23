@@ -7,8 +7,6 @@ Imports Microsoft.AspNetCore.Components.Rendering
 Imports VBBlazor.Runtime.Controls
 'TODO: Routing
 'TODO: Cascading parameters
-'TODO: Prevent default
-'TODO: @bind:event, @bind:after, @bind:format, @bind
 'TODO: Templating
 Public Class XmlRenderer
     Private ReadOnly _page As IRenderable
@@ -118,7 +116,20 @@ Public Class XmlRenderer
                                    Dim prop As PropertyInfo = props.FirstOrDefault(Function(x) x.Name = el.Name.LocalName)
                                    If prop IsNot Nothing Then
                                        index += 1
-                                       builder.AddAttribute(index, prop.Name, GetFragment(el))
+                                       If prop.PropertyType = GetType(RenderFragment) Then
+                                           builder.AddAttribute(index, prop.Name, GetFragment(el))
+                                       ElseIf prop.PropertyType.IsGenericType AndAlso prop.PropertyType.GetGenericTypeDefinition() = GetType(RenderFragment(Of )) Then
+                                           Dim itemType As Type = prop.PropertyType.GetGenericArguments()(0)'TODO: Add context
+                                           Dim fragmentMethod As MethodInfo = GetType(XmlRenderer).GetMethod("GetFragment", BindingFlags.NonPublic Or BindingFlags.Instance)
+                                           Dim bodyExpr = Expression.Call(Expression.Constant(Me), fragmentMethod, Expression.Constant(el))
+                                           Dim contextParam = Expression.Parameter(itemType)
+                                           Dim params = {contextParam}
+                                           Dim lamdaMethod = GetType(Expression).GetMethods().First(Function(x) x.Name = "Lambda" AndAlso x.GetParameters().Length = 2).MakeGenericMethod(prop.PropertyType)
+                                           Dim lambdaExpr = lamdaMethod.Invoke(Nothing, {bodyExpr, params})
+                                           Dim compileMethod = GetType(LambdaExpression).GetMethods().First(Function(x) x.Name = "Compile" AndAlso x.GetParameters().Length = 0)
+                                           Dim lamda = compileMethod.Invoke(lambdaExpr, Nothing)
+                                           builder.AddAttribute(index, prop.Name, lamda)
+                                       End If
                                    End If
                                Next
                            Else

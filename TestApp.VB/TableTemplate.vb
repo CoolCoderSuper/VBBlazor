@@ -11,22 +11,22 @@ Public Class TableTemplate(Of TItem)
 
     <Parameter>
     Public Property TableHeader As RenderFragment
-
     <Parameter>
     Public Property RowTemplate As RenderFragment(Of TItem)
-
     <Parameter>
     Public Property Items As IEnumerable(Of TItem)
 
     Public ReadOnly Property ActualRowTemplate As RenderFragment(Of TItem)
         Get
-            Return Function(item As TItem) 
-                Return Sub(builder As RenderTreeBuilder)
-                    builder.OpenElement(0, "tr")
-                    builder.AddContent(1, RowTemplate(item))
-                    builder.CloseElement()
-                End Sub
-            End Function
+            Return Function(item As TItem)
+                       Return Sub(builder As RenderTreeBuilder)
+                                  builder.OpenElement(0, "tr")
+                                  If RowTemplate IsNot Nothing Then
+                                      builder.AddContent(1, RowTemplate(item))
+                                  End If
+                                  builder.CloseElement()
+                              End Sub
+                   End Function
         End Get
     End Property
 
