@@ -8,7 +8,6 @@ Imports VBBlazor.Runtime.Controls
 'TODO: Routing
 'TODO: Cascading parameters
 'TODO: Templating
-'TODO: Basic type conversion
 Public Class XmlRenderer
     Private ReadOnly _page As IRenderable
     Private ReadOnly _receiver As Object
@@ -85,7 +84,11 @@ Public Class XmlRenderer
                                    builder.AddAttribute(index, actualName, New EventCallback(_receiver, Expression.Lambda(eventExpression, parameters).Compile))
                                End If
                            Else
-                               builder.AddAttribute(index, attr.Name.LocalName, GetPropertyValue(valueName, context))
+                               Dim propertyValue As Object = GetPropertyValue(valueName, context)
+                               If componentType IsNot Nothing AndAlso componentType.GetProperties().Any(Function(x) x.Name = attr.Name.LocalName) Then
+                                   propertyValue = CTypeDynamic(propertyValue, componentType.GetProperty(attr.Name.LocalName).PropertyType)
+                               End If
+                               builder.AddAttribute(index, attr.Name.LocalName, propertyValue)
                            End If
                        Else
                            builder.AddAttribute(index, attr.Name.LocalName, attr.Value)
