@@ -179,11 +179,15 @@ Public Class XmlRenderer
 
     Private Shared Function GetTypeByName(name As String) As Type
         For Each assembly In AppDomain.CurrentDomain.GetAssemblies().Reverse()
-            Dim tt As Type = assembly.GetTypes().FirstOrDefault(Function(x) x.FullName.StartsWith(name))
+            Dim tt As Type = assembly.GetTypes().FirstOrDefault(Function(x) RemoveGenericText(x.FullName) = name)
             If tt IsNot Nothing Then
                 Return tt
             End If
         Next
         Return Nothing
+    End Function
+    
+    Private Shared Function RemoveGenericText(name As String) As String
+        Return name.Split("`")(0)
     End Function
 End Class
