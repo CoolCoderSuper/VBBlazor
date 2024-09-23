@@ -17,7 +17,7 @@ Namespace Controls
         End Sub
     End Class
     
-    Public Class Fragment(Of T)
+    Public Class ValueFragment(Of T)
         Inherits Control
         
         Public Sub New()

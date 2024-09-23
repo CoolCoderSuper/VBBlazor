@@ -1,5 +1,4 @@
 ﻿Imports Microsoft.AspNetCore.Components
-Imports Microsoft.AspNetCore.Components.Rendering
 Imports VBBlazor.Runtime.Controls
 
 Public Class TableTemplate(Of TItem)
@@ -16,20 +15,6 @@ Public Class TableTemplate(Of TItem)
     <Parameter>
     Public Property Items As IEnumerable(Of TItem)
 
-    Public ReadOnly Property ActualRowTemplate As RenderFragment(Of TItem)
-        Get
-            Return Function(item As TItem)
-                       Return Sub(builder As RenderTreeBuilder)
-                                  builder.OpenElement(0, "tr")
-                                  If RowTemplate IsNot Nothing Then
-                                      builder.AddContent(1, RowTemplate(item))
-                                  End If
-                                  builder.CloseElement()
-                              End Sub
-                   End Function
-        End Get
-    End Property
-
     Public Overrides Function GetContent() As XElement
         Return <table class="table" xmlns:local="VBBlazor.Runtime.Controls">
                    <thead>
@@ -38,7 +23,13 @@ Public Class TableTemplate(Of TItem)
                        </tr>
                    </thead>
                    <tbody>
-                        <local:Loop TItem="TItem" Items="@Items" Template="@ActualRowTemplate"/>
+                       <local:Loop TItem="TItem" Items="@Items">
+                           <Template>
+                               <tr>
+                                   <local:ValueFragment T="TItem" Value="@Context" ChildContent="@RowTemplate"/>
+                               </tr>
+                           </Template>
+                       </local:Loop>
                    </tbody>
                </table>
     End Function

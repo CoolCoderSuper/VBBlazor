@@ -7,7 +7,6 @@ Imports Microsoft.AspNetCore.Components.Rendering
 Imports VBBlazor.Runtime.Controls
 'TODO: Routing
 'TODO: Cascading parameters
-'TODO: Templating
 Public Class XmlRenderer
     Private ReadOnly _page As IRenderable
     Private ReadOnly _receiver As Object
@@ -123,7 +122,7 @@ Public Class XmlRenderer
                                        If prop.PropertyType = GetType(RenderFragment) Then
                                            builder.AddAttribute(index, prop.Name, GetFragment(el, context))
                                        ElseIf prop.PropertyType.IsGenericType AndAlso prop.PropertyType.GetGenericTypeDefinition() = GetType(RenderFragment(Of )) Then
-                                           Dim itemType As Type = prop.PropertyType.GetGenericArguments()(0)'TODO: Add context
+                                           Dim itemType As Type = prop.PropertyType.GetGenericArguments()(0)
                                            Dim fragmentMethod As MethodInfo = GetType(XmlRenderer).GetMethod("GetFragment", BindingFlags.NonPublic Or BindingFlags.Instance)
                                            Dim contextParam = Expression.Parameter(itemType)
                                            Dim bodyExpr = Expression.Call(Expression.Constant(Me), fragmentMethod, Expression.Constant(el), contextParam)
@@ -165,6 +164,7 @@ Public Class XmlRenderer
     End Function
 
     Private Function GetPropertyValue(name As String, context As Object) As Object
+        If name = "Context" Then Return context
         Dim useContext As Boolean = name.StartsWith("Context.")
         If useContext Then
             name = name.Remove(0, 8)
