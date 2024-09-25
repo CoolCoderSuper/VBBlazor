@@ -1,0 +1,18 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <RootNamespace>TestVBApp</RootNamespace>
+        <TargetFramework>net8.0</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <None Remove="My Project\launchSettings.json" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="8.0.8"/>
+      <ProjectReference Include="..\TestVBApp.Client\TestVBApp.Client.vbproj" />
+    </ItemGroup>
+
+</Project>

@@ -16,6 +16,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestApp.Client", "TestApp\T
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "TestApp.VB", "TestApp.VB\TestApp.VB.vbproj", "{75C4A628-DDC6-44EA-9944-BECDC2446ECE}"
 EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "TestVBApp", "TestVBApp\TestVBApp.vbproj", "{210A22B3-7408-45FF-BB5D-070F3C6A04E1}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "TestVBApp.Client", "TestVBApp.Client\TestVBApp.Client.vbproj", "{6A8542C4-21CE-4311-A951-393B73E191E8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -38,6 +42,14 @@ Global
 		{75C4A628-DDC6-44EA-9944-BECDC2446ECE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{75C4A628-DDC6-44EA-9944-BECDC2446ECE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{75C4A628-DDC6-44EA-9944-BECDC2446ECE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{210A22B3-7408-45FF-BB5D-070F3C6A04E1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{210A22B3-7408-45FF-BB5D-070F3C6A04E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{210A22B3-7408-45FF-BB5D-070F3C6A04E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{210A22B3-7408-45FF-BB5D-070F3C6A04E1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6A8542C4-21CE-4311-A951-393B73E191E8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6A8542C4-21CE-4311-A951-393B73E191E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6A8542C4-21CE-4311-A951-393B73E191E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6A8542C4-21CE-4311-A951-393B73E191E8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
