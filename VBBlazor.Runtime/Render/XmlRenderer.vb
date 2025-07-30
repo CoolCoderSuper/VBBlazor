@@ -5,7 +5,7 @@ Imports Microsoft.AspNetCore.Components
 Imports Microsoft.AspNetCore.Components.CompilerServices
 Imports Microsoft.AspNetCore.Components.Rendering
 Imports VBBlazor.Runtime.Controls
-'TODO: Scoped css
+
 Public Class XmlRenderer
     Private ReadOnly _page As IRenderable
     Private ReadOnly _receiver As Object
